@@ -15,11 +15,19 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 async function run() {
     try{
-        const mediaCollection = client.db('alphaMobile').collection('media')
+        const mediaCollection = client.db('weshare').collection('media')
 
-        app.post('/', async(req, res) =>{
-            
+        app.post('/media', async(req, res) =>{
+            const mediaInfo = req.body;
+            const result = await mediaCollection.insertOne(mediaInfo)
+            res.send(result)
         })
+        app.get('/medias', async(req, res) =>{
+            const query = {};
+            const result = await mediaCollection.find(query).toArray();
+            res.send(result);
+        })
+
 
     }
     finally{
